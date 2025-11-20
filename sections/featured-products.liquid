@@ -1,0 +1,137 @@
+{% comment %}
+  Featured Products Section
+  Displays products from a selected collection, excluding items already in the cart
+{% endcomment %}
+
+{{ 'featured-products.min.css' | asset_url | stylesheet_tag }}
+
+<featured-products class="featured-products" data-section-id="{{ section.id }}">
+  <div class="featured-products__container page-width">
+    {% if section.settings.heading != blank %}
+      <h2 class="featured-products__heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    {% if section.settings.collection != blank %}
+      {% assign collection = collections[section.settings.collection] %}
+
+      <div class="featured-products__grid" data-products-container>
+        {% for product in collection.products limit: section.settings.products_to_show %}
+          <div class="featured-products__item" data-product-id="{{ product.id }}" data-product-item>
+            <a href="{{ product.url }}" class="featured-products__link">
+              {% if product.featured_image %}
+                <div class="featured-products__image-wrapper">
+                  <img
+                    src="{{ product.featured_image | image_url: width: 400 }}"
+                    srcset="
+                      {{ product.featured_image | image_url: width: 200 }} 200w,
+                      {{ product.featured_image | image_url: width: 400 }} 400w,
+                      {{ product.featured_image | image_url: width: 600 }} 600w
+                    "
+                    sizes="(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw"
+                    alt="{{ product.featured_image.alt | escape }}"
+                    class="featured-products__image"
+                    loading="lazy"
+                    width="{{ product.featured_image.width }}"
+                    height="{{ product.featured_image.height }}"
+                  >
+                </div>
+              {% endif %}
+
+              <div class="featured-products__content">
+                <h3 class="featured-products__title">{{ product.title }}</h3>
+              </div>
+            </a>
+
+            <div class="featured-products__actions">
+              <button
+                type="button"
+                class="featured-products__add-to-cart button button--primary"
+                data-product-id="{{ product.id }}"
+                data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                {% unless product.available %}disabled{% endunless %}
+              >
+                {% if product.available %}
+                  {{ 'products.product.add_to_cart' | t }} - {{ product.price | money }}
+                {% else %}
+                  {{ 'products.product.sold_out' | t }}
+                {% endif %}
+              </button>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="featured-products__empty">
+        <p>{{ 'sections.featured_products.no_collection' | t }}</p>
+      </div>
+    {% endif %}
+  </div>
+</featured-products>
+
+<script src="{{ 'featured-products.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Featured Products"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "label": "Products to show"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Products"
+    }
+  ]
+}
+{% endschema %}
+
+{% style %}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{% endstyle %}

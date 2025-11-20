@@ -1,15 +1,198 @@
-# Dawn
+# Dawn Theme - Featured Products Section
 
-[![Build status](https://github.com/shopify/dawn/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Shopify/dawn/actions/workflows/ci.yml?query=branch%3Amain)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?color=informational)](/.github/CONTRIBUTING.md)
+Custom Shopify theme based on Dawn with a Featured Products section for test assignment.
 
-[Getting started](#getting-started) |
-[Staying up to date with Dawn changes](#staying-up-to-date-with-dawn-changes) |
-[Developer tools](#developer-tools) |
-[Contributing](#contributing) |
-[Code of conduct](#code-of-conduct) |
-[Theme Store submission](#theme-store-submission) |
-[License](#license)
+## 🎯 Features
+
+- ✅ Custom "Featured Products" section with collection selector
+- ✅ Products already in cart are automatically hidden
+- ✅ Add to cart without page reload (AJAX)
+- ✅ Integration with Dawn's cart drawer/notification
+- ✅ Section auto-refresh after adding to cart (Section Rendering API)
+- ✅ Responsive design (Mobile-first)
+- ✅ BEM CSS naming convention
+- ✅ SCSS with Gulp build system
+- ✅ Custom Web Component (no jQuery)
+- ✅ Cross-browser compatible
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- npm
+- Shopify Partner account
+- Shopify CLI
+
+### Installation
+
+1. **Clone the repository:**
+```bash
+git clone https://github.com/Akirienko/refactorPlus.git
+cd refactorPlus
+```
+
+2. **Install dependencies:**
+```bash
+npm install
+```
+
+3. **Build SCSS files:**
+```bash
+npm run build
+```
+
+4. **Connect to your Shopify store:**
+```bash
+shopify theme dev
+```
+
+This will start a local development server and sync changes to your store.
+
+## 🛠️ Development
+
+### Available Scripts
+
+- `npm run dev` - Watch SCSS files and compile on change
+- `npm run build` - Build SCSS to CSS (production)
+- `npm run shopify:dev` - Start Shopify theme development server
+- `npm run shopify:push` - Push theme to Shopify
+
+### Project Structure
+
+```
+refactorPlus/
+├── assets/                 # Compiled CSS, JS, images
+│   ├── featured-products.js
+│   └── featured-products.min.css
+├── sections/              # Shopify sections
+│   └── featured-products.liquid
+├── src/                   # Source files
+│   └── scss/
+│       └── featured-products.scss
+├── config/                # Theme settings
+├── layout/                # Theme layouts
+├── locales/               # Translations
+├── snippets/              # Reusable code snippets
+├── templates/             # Page templates
+├── gulpfile.js           # Gulp configuration
+└── package.json          # Dependencies
+```
+
+## 📦 How to Use
+
+### Adding the Featured Products Section
+
+1. **In Shopify Admin:**
+   - Go to Online Store → Themes
+   - Click "Customize" on your Dawn theme
+   - On the homepage, click "Add section"
+   - Select "Featured Products"
+
+2. **Configure the section:**
+   - **Heading:** Enter a title (e.g., "Featured Products")
+   - **Collection:** Select a collection to display
+   - **Products to show:** Choose how many products (2-12)
+   - **Padding:** Adjust top/bottom spacing
+
+3. **Save** your changes
+
+### How It Works
+
+1. **Collection Selection:** The section fetches products from the selected collection
+2. **Cart Filtering:** On page load, it checks the cart and hides products already added
+3. **Add to Cart:** Clicking "Add to cart" button:
+   - Adds product via Shopify Cart API
+   - Updates Dawn's cart drawer/notification
+   - Hides the product from the list
+   - Refreshes the section (Section Rendering API)
+
+## 🎨 Customization
+
+### Styling
+
+Edit SCSS files in `src/scss/featured-products.scss`:
+
+```scss
+.featured-products {
+  // Your custom styles
+}
+```
+
+Then rebuild:
+```bash
+npm run build
+```
+
+### JavaScript
+
+Edit `assets/featured-products.js` to modify functionality.
+
+### Liquid Template
+
+Edit `sections/featured-products.liquid` to change HTML structure.
+
+## 🏗️ Technical Stack
+
+- **Theme:** Shopify Dawn (v15.4.0)
+- **CSS:** SCSS with BEM naming
+- **JS:** Vanilla JavaScript (Custom Elements/Web Components)
+- **Build Tool:** Gulp 4
+- **Package Manager:** npm
+- **APIs Used:**
+  - Shopify Cart API (`/cart/add.js`, `/cart.js`)
+  - Section Rendering API
+  - Dawn's cart update events
+
+## 🔧 Build System
+
+### Gulp Tasks
+
+The project uses Gulp for SCSS compilation:
+
+- **SCSS Compilation:** Converts SCSS to CSS
+- **Autoprefixer:** Adds vendor prefixes
+- **CSS Minification:** Minifies CSS for production
+- **Watch Mode:** Auto-compile on file changes
+
+## 📱 Browser Support
+
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+- Mobile browsers (iOS Safari, Chrome Mobile)
+
+## 🧪 Testing
+
+1. **Add products to cart** from other pages
+2. **Navigate to homepage** with Featured Products section
+3. **Verify** that products in cart are hidden
+4. **Click "Add to cart"** on a featured product
+5. **Check** that:
+   - Cart drawer/notification opens
+   - Product disappears from the list
+   - Cart count updates
+
+## 🚢 Deployment
+
+1. **Build production assets:**
+```bash
+npm run build
+```
+
+2. **Push to Shopify:**
+```bash
+npm run shopify:push
+```
+
+## 👤 Author
+
+Developed as a test assignment for Shopify Developer position.
+
+---
+
+# Original Dawn Documentation
 
 Dawn represents a HTML-first, JavaScript-only-as-needed approach to theme development. It's Shopify's first source available theme with performance, flexibility, and [Online Store 2.0 features](https://www.shopify.com/partners/blog/shopify-online-store) built-in and acts as a reference for building Shopify themes.
 
